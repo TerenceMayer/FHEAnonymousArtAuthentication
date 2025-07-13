@@ -1,0 +1,54 @@
+{
+  "name": "anonymous-art-fhevm",
+  "version": "2.0.0",
+  "description": "Anonymous Artwork Authentication Platform with Universal FHEVM SDK - fhEVM v0.6.0+",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "main": "index.html",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy": "npx hardhat run scripts/deploy.js --network sepolia",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network hardhat",
+    "test": "npx hardhat test",
+    "clean": "npx hardhat clean",
+    "node": "npx hardhat node",
+    "build:sdk": "pnpm --filter './packages/*' -r build",
+    "dev:sdk": "pnpm --filter './packages/*' -r --parallel dev",
+    "test:sdk": "pnpm --filter './packages/*' -r test",
+    "lint": "pnpm --filter './packages/*' -r lint",
+    "serve": "npx http-server . -p 8080 --cors"
+  },
+  "keywords": [
+    "fhEVM",
+    "FHE",
+    "blockchain",
+    "art-authentication",
+    "zama",
+    "privacy",
+    "encryption"
+  ],
+  "author": "Anonymous Art Authentication Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.0"
+  },
+  "dependencies": {
+    "@fhevm/solidity": "^0.8.0",
+    "@zama-fhe/oracle-solidity": "^0.2.0",
+    "ethers": "^6.14.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/anonymous-art-authentication"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/anonymous-art-authentication/issues"
+  }
+}
