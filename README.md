@@ -12,7 +12,7 @@
 
 - **🚀 Live Demo**: [https://terencemayer.github.io/FHEAnonymousArtAuthentication/](https://terencemayer.github.io/FHEAnonymousArtAuthentication/)
 - **📋 GitHub Repository**: [https://github.com/TerenceMayer/FHEAnonymousArtAuthentication](https://github.com/TerenceMayer/FHEAnonymousArtAuthentication)
-- **🎥 Video Demo**: [Watch demonstration](#) *(Coming Soon)*
+- **🎥 Video Demo**: [Watch demonstration](#/demo.mp4) 
 - **📊 Smart Contract**: [View on Etherscan](https://sepolia.etherscan.io/address/0x4D874585f820437656554590C812b672305fbb72)
 
 ---
@@ -352,7 +352,7 @@ Watch our comprehensive video demo showcasing:
 - ✅ Admin panel functionality
 - ✅ Privacy-preserving features in action
 
-**[Watch Demo Video](#)** *(Coming Soon)*
+**[Watch Demo Video](#/demo.mp4)** 
 
 ---
 
