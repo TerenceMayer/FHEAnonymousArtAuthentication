@@ -1,24 +1,25 @@
 {
-  "name": "anonymous-art-fhevm",
+  "name": "anonymous-art-authentication-fhevm",
   "version": "2.0.0",
-  "description": "Anonymous Artwork Authentication Platform with Universal FHEVM SDK - fhEVM v0.6.0+",
+  "description": "Anonymous Artwork Authentication Platform using Fully Homomorphic Encryption - fhEVM v0.8.0",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "main": "index.html",
   "scripts": {
     "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "test:gas": "REPORT_GAS=true npx hardhat test",
+    "test:coverage": "npx hardhat coverage",
     "deploy": "npx hardhat run scripts/deploy.js --network sepolia",
     "deploy:local": "npx hardhat run scripts/deploy.js --network hardhat",
-    "test": "npx hardhat test",
-    "clean": "npx hardhat clean",
+    "verify": "npx hardhat run scripts/verify.js --network sepolia",
+    "interact": "npx hardhat run scripts/interact.js --network sepolia",
+    "simulate": "npx hardhat run scripts/simulate.js --network sepolia",
     "node": "npx hardhat node",
-    "build:sdk": "pnpm --filter './packages/*' -r build",
-    "dev:sdk": "pnpm --filter './packages/*' -r --parallel dev",
-    "test:sdk": "pnpm --filter './packages/*' -r test",
-    "lint": "pnpm --filter './packages/*' -r lint",
-    "serve": "npx http-server . -p 8080 --cors"
+    "clean": "npx hardhat clean",
+    "lint": "npx solhint 'contracts/**/*.sol'",
+    "lint:fix": "npx solhint 'contracts/**/*.sol' --fix",
+    "format": "npx prettier --write 'contracts/**/*.sol' 'scripts/**/*.js' 'test/**/*.js'",
+    "serve": "npx http-server . -p 8080 --cors -c-1"
   },
   "keywords": [
     "fhEVM",
@@ -33,8 +34,15 @@
   "license": "MIT",
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "chai": "^4.3.10",
     "dotenv": "^16.3.1",
-    "hardhat": "^2.19.0"
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.5",
+    "solhint": "^4.1.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-solidity": "^1.3.0"
   },
   "dependencies": {
     "@fhevm/solidity": "^0.8.0",
