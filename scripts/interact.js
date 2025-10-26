@@ -1,25 +1,65 @@
-const { ethers } = require("hardhat");
+const { ethers, network } = require("hardhat");
 
 async function main() {
-  const contractAddress = process.env.CONTRACT_ADDRESS || "0x4D874585f820437656554590C812b672305fbb72";
+  console.log("=== Anonymous Art Authentication - Contract Interaction ===\n");
 
-  console.log("=== Contract Interaction Demo ===\n");
-  console.log("Contract Address:", contractAddress);
+  // Get contract address from environment or deployment file
+  let contractAddress = process.env.CONTRACT_ADDRESS;
+
+  if (!contractAddress) {
+    try {
+      const fs = require('fs');
+      const deploymentInfo = JSON.parse(fs.readFileSync('deployment-info.json', 'utf8'));
+      contractAddress = deploymentInfo.contractAddress;
+      console.log("📄 Using contract address from deployment-info.json");
+    } catch (error) {
+      contractAddress = "0x4D874585f820437656554590C812b672305fbb72"; // Fallback
+      console.log("⚠️  Using fallback contract address");
+    }
+  }
+
+  console.log("Connection Details:");
+  console.log("- Network:", network.name);
+  console.log("- Chain ID:", network.config.chainId);
+  console.log("- Contract Address:", contractAddress);
+  console.log(`- Explorer: https://${network.name !== 'hardhat' ? network.name + '.' : ''}etherscan.io/address/${contractAddress}\n`);
 
   // Get the contract instance
+  console.log("Connecting to contract...");
   const AnonymousArtAuthentication = await ethers.getContractFactory("AnonymousArtAuthentication");
   const contract = AnonymousArtAuthentication.attach(contractAddress);
 
+  try {
+    // Verify contract exists
+    const code = await ethers.provider.getCode(contractAddress);
+    if (code === '0x') {
+      throw new Error("No contract found at this address");
+    }
+    console.log("✅ Contract found and connected\n");
+  } catch (error) {
+    console.error("❌ Error: Could not connect to contract");
+    console.error(error.message);
+    process.exit(1);
+  }
+
   // Get contract owner
   const owner = await contract.owner();
-  console.log("Contract Owner:", owner);
+  const [currentUser] = await ethers.getSigners();
+  const isOwner = owner.toLowerCase() === currentUser.address.toLowerCase();
+
+  console.log("Contract Information:");
+  console.log("- Owner:", owner);
+  console.log("- Current User:", currentUser.address);
+  console.log("- Is Owner:", isOwner ? "✅ Yes" : "❌ No");
 
   // Get current IDs
   const nextArtworkId = await contract.nextArtworkId();
   const nextExpertId = await contract.nextExpertId();
-  console.log("\nCurrent State:");
+  console.log("\nContract State:");
   console.log("- Next Artwork ID:", nextArtworkId.toString());
   console.log("- Next Expert ID:", nextExpertId.toString());
+  console.log("- Total Artworks:", (Number(nextArtworkId) - 1).toString());
+  console.log("- Total Experts:", (Number(nextExpertId) - 1).toString());
 
   // List all artworks
   console.log("\n=== Artworks ===");
@@ -78,12 +118,17 @@ async function main() {
     console.log("No experts registered yet.");
   }
 
+  console.log("\n=== Summary ===");
+  console.log(`Total Artworks: ${totalArtworks}`);
+  console.log(`Total Experts: ${totalExperts}`);
+  console.log(`Contract Owner: ${isOwner ? 'You (Admin Access)' : 'Different Address'}`);
   console.log("\n=== Interaction Complete ===\n");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("\n❌ Interaction failed:");
+    console.error(error.message);
     process.exit(1);
   });

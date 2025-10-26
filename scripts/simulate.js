@@ -1,12 +1,18 @@
-const { ethers } = require("hardhat");
+const { ethers, network } = require("hardhat");
 
 async function main() {
-  console.log("=== Complete Authentication Flow Simulation ===\n");
+  console.log("=== Anonymous Art Authentication - Complete Workflow Simulation ===\n");
+
+  console.log("Simulation Configuration:");
+  console.log("- Network:", network.name);
+  console.log("- Chain ID:", network.config.chainId);
+  console.log("- Purpose: Demonstrate complete authentication workflow");
+  console.log("- Duration: ~30-60 seconds\n");
 
   // Get signers
   const [owner, artworkOwner, expert1, expert2, expert3] = await ethers.getSigners();
 
-  console.log("Participants:");
+  console.log("Simulation Participants:");
   console.log("- Owner/Admin:", owner.address);
   console.log("- Artwork Owner:", artworkOwner.address);
   console.log("- Expert 1:", expert1.address);
@@ -132,18 +138,42 @@ async function main() {
   const expertIds = await contract.getArtworkExperts(1);
   console.log("   - Number of Experts:", expertIds.length);
 
-  console.log("\n=== Simulation Complete ===");
-  console.log("\nSummary:");
-  console.log("✅ Artwork submitted and authenticated successfully");
-  console.log("✅ 3 experts provided blind evaluations");
-  console.log("✅ Consensus reached (100% agreement)");
-  console.log("✅ Final authentication: AUTHENTIC with score 80/100");
-  console.log("\nThis demonstrates the complete anonymous art authentication workflow!");
+  console.log("\n=== Simulation Complete ===\n");
+
+  console.log("Workflow Summary:");
+  console.log("✅ Step 1: Contract deployed successfully");
+  console.log("✅ Step 2: Artwork submitted for authentication");
+  console.log("✅ Step 3: Three experts registered on platform");
+  console.log("✅ Step 4: Admin verified all expert credentials");
+  console.log("✅ Step 5: Experts submitted blind evaluations");
+  console.log("✅ Step 6: Authentication finalized by admin");
+
+  console.log("\nAuthentication Results:");
+  console.log("- Artwork Status: AUTHENTIC ✅");
+  console.log("- Final Score: 80/100");
+  console.log("- Expert Consensus: 100% (3/3 experts agreed)");
+  console.log("- Authenticity Scores: 80, 75, 85");
+  console.log("- Confidence Levels: 90%, 85%, 95%");
+
+  console.log("\nKey Features Demonstrated:");
+  console.log("🔐 Anonymous evaluation process");
+  console.log("🎯 Multi-expert consensus mechanism");
+  console.log("✅ Admin verification workflow");
+  console.log("📊 Transparent on-chain authentication");
+  console.log("🔒 Privacy-preserving with FHE encryption");
+
+  console.log("\nThis simulation demonstrates the complete anonymous art authentication workflow!");
+  console.log("For production use, deploy to Sepolia testnet with: npm run deploy\n");
 }
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
+    console.error("\n❌ Simulation failed:");
+    console.error(error.message);
+    console.log("\nTroubleshooting:");
+    console.log("1. Ensure you're running on local Hardhat network");
+    console.log("2. Try: npx hardhat node (in separate terminal)");
+    console.log("3. Check contract compilation: npm run compile");
     process.exit(1);
   });
