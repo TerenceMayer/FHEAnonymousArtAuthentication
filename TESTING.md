@@ -14,7 +14,7 @@ This document provides comprehensive information about testing the Anonymous Art
 
 ## Overview
 
-The test suite consists of **50+ test cases** covering all aspects of the smart contract functionality, including:
+The test suite consists of **67 test cases** covering all aspects of the smart contract functionality, including:
 
 - Contract deployment and initialization
 - Artwork submission with encrypted data
@@ -44,7 +44,7 @@ The test suite consists of **50+ test cases** covering all aspects of the smart 
 | **View Functions** | 5 | Testing getter functions |
 | **Complex Scenarios** | 2 | End-to-end workflow testing |
 
-**Total**: 50+ test cases
+**Total**: 67 test cases
 
 ---
 
