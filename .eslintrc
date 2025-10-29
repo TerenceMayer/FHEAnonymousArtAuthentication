@@ -1,0 +1,67 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "double"],
+    "semi": ["error", "always"],
+    "no-unused-vars": ["warn", {
+      "argsIgnorePattern": "^_",
+      "varsIgnorePattern": "^_"
+    }],
+    "no-console": "off",
+    "no-process-exit": "off",
+    "prefer-const": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "prefer-arrow-callback": "warn",
+    "prefer-template": "warn",
+    "no-trailing-spaces": "error",
+    "eol-last": ["error", "always"],
+    "comma-dangle": ["error", "never"],
+    "max-len": ["warn", {
+      "code": 120,
+      "ignoreComments": true,
+      "ignoreStrings": true
+    }],
+    "no-multiple-empty-lines": ["error", {
+      "max": 2,
+      "maxEOF": 1
+    }],
+    "space-before-blocks": "error",
+    "keyword-spacing": "error",
+    "space-infix-ops": "error",
+    "arrow-spacing": "error",
+    "no-duplicate-imports": "error",
+    "no-useless-constructor": "error"
+  },
+  "globals": {
+    "artifacts": "readonly",
+    "contract": "readonly",
+    "assert": "readonly",
+    "web3": "readonly",
+    "ethers": "readonly",
+    "network": "readonly",
+    "expect": "readonly"
+  },
+  "overrides": [
+    {
+      "files": ["hardhat.config.js", "scripts/**/*.js", "test/**/*.js"],
+      "rules": {
+        "no-process-exit": "off"
+      }
+    }
+  ]
+}
