@@ -1,0 +1,23 @@
+# Solhint ignore patterns
+
+# Directories
+node_modules/
+artifacts/
+cache/
+coverage/
+typechain/
+typechain-types/
+dist/
+build/
+
+# Test files
+test/
+scripts/
+
+# External dependencies
+**/node_modules/**
+**/lib/**
+**/interfaces/**
+
+# Generated files
+*.d.ts
