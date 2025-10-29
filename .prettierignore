@@ -1,0 +1,37 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+artifacts/
+cache/
+dist/
+build/
+coverage/
+typechain/
+typechain-types/
+
+# Generated files
+*.min.js
+*.bundle.js
+
+# Configuration
+.env
+.env.*
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
