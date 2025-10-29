@@ -1,0 +1,180 @@
+name: Code Quality
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  solhint:
+    name: Solidity Linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Solhint
+        run: npm run lint
+
+      - name: Generate lint report
+        if: always()
+        run: |
+          echo "### Solhint Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          npm run lint 2>&1 | tee lint-report.txt || true
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat lint-report.txt >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+
+  prettier:
+    name: Code Formatting Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Solidity formatting
+        run: |
+          npx prettier --check 'contracts/**/*.sol' || {
+            echo "### ⚠️ Formatting Issues Found" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Some files need formatting. Run \`npm run format\` to fix." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+
+      - name: Check JavaScript formatting
+        run: |
+          npx prettier --check 'scripts/**/*.js' 'test/**/*.js' || {
+            echo "JavaScript files need formatting" >> $GITHUB_STEP_SUMMARY
+            exit 0
+          }
+
+  complexity:
+    name: Code Complexity Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Analyze contract complexity
+        run: |
+          echo "### Contract Complexity Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          npx hardhat check || true
+
+  gas-report:
+    name: Gas Usage Report
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate gas report
+        env:
+          REPORT_GAS: true
+        run: npm run test:gas
+
+      - name: Upload gas report
+        uses: actions/upload-artifact@v4
+        with:
+          name: gas-report
+          path: gas-report.txt
+          retention-days: 30
+
+      - name: Display gas summary
+        if: always()
+        run: |
+          echo "### Gas Usage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f gas-report.txt ]; then
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            head -50 gas-report.txt >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  dependencies:
+    name: Dependency Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Check for outdated dependencies
+        run: |
+          npm outdated || true
+          echo "### Dependency Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          npm outdated --json | jq '.' >> $GITHUB_STEP_SUMMARY || echo "All dependencies up to date" >> $GITHUB_STEP_SUMMARY
+
+      - name: Security audit
+        run: |
+          npm audit --audit-level=moderate || true
+          echo "### Security Audit" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          npm audit --json | jq '.metadata' >> $GITHUB_STEP_SUMMARY || true
