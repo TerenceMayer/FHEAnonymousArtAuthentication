@@ -22,7 +22,7 @@
 
 **Smart Contract**: [View on Sepolia Etherscan](https://sepolia.etherscan.io/address/0x4D874585f820437656554590C812b672305fbb72)
 
-**Video Demo**: [Watch Full Demonstration](./demo.mp4)
+**Video Demo**: [demo.mp4]
 
 ---
 
