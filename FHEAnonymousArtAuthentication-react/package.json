@@ -1,0 +1,39 @@
+{
+  "name": "anonymous-art-authentication-react",
+  "version": "2.0.0",
+  "description": "Anonymous Artwork Authentication Platform - React Version with FHEVM SDK",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@anonymous-art/fhevm-sdk": "^1.0.0",
+    "@anonymous-art/fhevm-react": "^1.0.0",
+    "ethers": "^6.14.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "typescript": "^5.5.0",
+    "vite": "^5.4.0",
+    "eslint": "^8.57.0"
+  },
+  "keywords": [
+    "fhevm",
+    "fhe",
+    "react",
+    "art-authentication",
+    "blockchain",
+    "privacy",
+    "encryption",
+    "anonymous"
+  ],
+  "author": "Anonymous Art Authentication Team",
+  "license": "MIT"
+}
