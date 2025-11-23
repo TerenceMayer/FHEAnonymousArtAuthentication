@@ -39,6 +39,17 @@
 - 📊 **Consensus Mechanism** - Multiple expert agreement required for finalization
 - 🏆 **Reputation System** - Track expert accuracy and success rates
 
+### Advanced Features (NEW! v2.0)
+
+- 🔄 **Gateway Callback Mode** - Asynchronous decryption via FHE Gateway
+- 💰 **Refund Mechanism** - Automatic refunds for decryption failures
+- ⏱️ **Timeout Protection** - Prevents permanent fund locks (1-hour timeout)
+- 🎲 **Privacy-Preserving Division** - Random multipliers protect sensitive calculations
+- 🔢 **Price Obfuscation** - Multi-layer price privacy using cryptographic techniques
+- 🛡️ **Enhanced Security** - Input validation, access control, overflow protection
+- ⚡ **Gas Optimization** - Optimized HCU (Homomorphic Computation Units) usage
+- 👥 **Multi-Signature Operators** - Authorized operator system for admin functions
+
 ### Frontend Options
 
 #### 🎨 Vanilla JavaScript Version (Original)
@@ -421,22 +432,48 @@ function submitArtwork(uint32 _metadataHash, uint8 _condition) external {
 
 ### Smart Contract Architecture
 
-**Core Functions:**
+The project includes two smart contracts:
+
+#### 1. AnonymousArtAuthentication (Basic)
+Basic FHE art authentication with manual finalization.
+
+#### 2. PrivateArtVerification (Advanced) ⭐ NEW
+Advanced contract with Gateway callback pattern and enhanced security.
+
+**Advanced Contract Features:**
 
 ```solidity
-// Artwork Management
-function submitArtwork(uint32 _metadataHash, uint8 _condition, uint256 _requiredConsensus)
-function getArtworkInfo(uint256 artworkId) view returns (ArtworkInfo)
+// Gateway Callback Pattern
+function requestConsensusDecryption(uint256 artworkId) external
+function consensusDecryptionCallback(uint256 requestId, bytes cleartexts, bytes proof) external
 
-// Expert Management
-function registerExpert(uint8 _credentialsHash)
-function verifyExpert(uint256 expertId) onlyOwner
-function updateExpertSuccessRate(uint256 expertId, uint8 rate) onlyOwner
+// Refund & Timeout Protection
+function handleDecryptionTimeout(uint256 artworkId) external
+function claimDecryptionRefund(uint256 artworkId) external
 
-// Authentication Process
-function submitAuthentication(uint256 artworkId, uint256 expertId, uint8 _authenticity, uint8 _confidence)
-function finalizeAuthentication(uint256 artworkId, bool isAuthentic, uint256 finalScore) onlyOwner
+// Enhanced Artwork Management (with fee & obfuscation)
+function submitArtwork(uint32 _metadataHash, uint8 _condition, uint64 _price, uint256 _requiredConsensus) payable
+function grantArtworkAccess(uint256 artworkId, address user) external
+
+// Expert Management (with staking)
+function registerExpert(uint8 _credentialsHash, uint32 _initialReputation) payable
+function verifyExpert(uint256 expertId) onlyAuthorized
+function deactivateExpert(uint256 expertId) onlyOwner
+
+// Operator Authorization (Multi-Sig)
+function authorizeOperator(address operator) onlyOwner
+function revokeOperator(address operator) onlyOwner
+
+// Reward Distribution
+function claimAuthenticationReward(uint256 artworkId, uint256 expertId) external
+function withdrawPlatformFees(address to) onlyOwner
 ```
+
+**Key Constants:**
+- `MIN_VERIFICATION_FEE`: 0.01 ETH
+- `MIN_EXPERT_STAKE`: 0.005 ETH
+- `DECRYPTION_TIMEOUT`: 1 hour
+- `PLATFORM_FEE_PERCENT`: 2%
 
 **Access Control:**
 
@@ -745,7 +782,9 @@ npm audit
 | Document | Description |
 |----------|-------------|
 | [README.md](./README.md) | **This file** - Complete project overview |
-| [**React Version README** ⭐](./FHEAnonymousArtAuthentication-react/README.md) | **React + TypeScript version documentation** |
+| [**ARCHITECTURE.md** ⭐](./ARCHITECTURE.md) | **System architecture and advanced features** |
+| [**API.md** ⭐](./API.md) | **Complete API documentation** |
+| [**React Version README**](./FHEAnonymousArtAuthentication-react/README.md) | React + TypeScript version documentation |
 | [DEPLOYMENT.md](./DEPLOYMENT.md) | Deployment guide and instructions |
 | [TESTING.md](./TESTING.md) | Testing guide (67 test cases, 95% coverage) |
 | [SECURITY.md](./SECURITY.md) | Security audit and best practices |
